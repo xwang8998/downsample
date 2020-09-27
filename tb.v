@@ -162,6 +162,8 @@ wire signed [31:0] up_pcm_l, up_pcm_r;
 //                .started()
 //        );
 //down
+wire [31:0]down_ldata;
+wire [31:0]down_rdata;
 down176 u_down176(
 .pclk(pclk),
 .reset_n(preset_n),
@@ -171,12 +173,30 @@ down176 u_down176(
 .ilrck(wlrck),
 .obick(),
 .olrck(),
-.down_ldata(),
-.down_rdata()
+.down_ldata(down_ldata),
+.down_rdata(down_rdata)
 
 );
 
+wire [31:0]pcm44;
+rompcm44 u_pcm44(
+.clk(pclk),
+.reset_n(preset_n),
+.addrout(pcm44)
+);
 
+//wire [31:0]pcm88;
+//rompcm88 u_pcm88(
+//.clk(pclk),
+//.reset_n(preset_n),
+//.addrout(pcm88)
+//);
+//wire [31:0]pcm176;
+//rompcm176 u_pcm176(
+//.clk(pclk),
+//.reset_n(preset_n),
+//.addrout(pcm176)
+//);
 /*
 test u_test(
 .reset_n(preset_n),
@@ -227,7 +247,7 @@ test u_test(
 
 );
 */
-/*
+
 reg [6:0] k;    //352.8k
 reg [19:0] m;
 
@@ -235,16 +255,16 @@ always @(posedge pclk or negedge preset_n) begin
     if (0==preset_n) begin
       k <= 0;
 	  m <= 0;
-	  fr = $fopen("352.txt");
+	  fr = $fopen("down352.txt");
 	end
 	else begin
 	  k <= k +1;
 	  if(k ==  1) begin
-	     $fdisplay(fr,"@@@@=%d",pcmslow);
+	     $fdisplay(fr,"%d",down_ldata);
 		m <= m + 1;
-		if(m == 65600) $fclose(fr);
+		if(m == 65535) $fclose(fr);
 	  end
 	end
 end
-*/
+
 endmodule

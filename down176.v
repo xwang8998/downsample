@@ -10,8 +10,8 @@ output reg olrck,
 output [31:0]down_ldata,
 output [31:0]down_rdata
 );
-assign down_ldata = y0;
-assign down_rdata = y1;
+assign down_ldata = pcm_out;
+assign down_rdata = pcm_out;
 reg [6:0]i;
 reg [31:0]y0,y1;
 always @(posedge ibick or negedge reset_n)
@@ -47,7 +47,7 @@ always @(posedge ibick or negedge reset_n)
 
 	end
 wire [31:0]pcm705;
-rompcm705 u_pcm705(
+rompcm705_v3 u_pcm705_v3(
 .clk(pclk),
 .reset_n(reset_n),
 .addrout(pcm705)
